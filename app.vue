@@ -11,11 +11,11 @@ const tgWebApp = useTgWebAppStore()
 
 tgWebApp.setWebAppData()
 
-// tgWebApp.setUserData()
-//
-//
-//
-// tgWebApp.setGeo()
+tgWebApp.setUserData()
+
+
+
+tgWebApp.setGeo()
 
 
 
