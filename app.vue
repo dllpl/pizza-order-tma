@@ -1,7 +1,9 @@
 <template>
     <div>
         <NuxtPage/>
-        <ClosingConfirmation/>
+        <ClientOnly>
+            <ClosingConfirmation/>
+        </ClientOnly>
     </div>
 </template>
 <script setup>
