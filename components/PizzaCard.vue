@@ -7,11 +7,11 @@
             <button
                     v-if="count > 0"
                     @click="decrement"
-                    class="bg-red-500 text-white rounded md:px-4 px-10 py-1">-</button>
+                    class="bg-red-500 text-white rounded md:px-4 px-5 py-1">-</button>
             <span v-if="count > 0" class="mx-2 text-black dark:text-white">{{ count }}</span>
             <button
                     @click="increment"
-                    class="bg-tg-light text-white rounded md:px-4 px-10 py-1">+</button>
+                    class="bg-tg-light text-white rounded md:px-4 px-5 py-1">+</button>
         </div>
     </div>
 </template>

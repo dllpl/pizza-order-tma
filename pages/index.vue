@@ -23,7 +23,7 @@
                 </div>
             </Modal>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                 <PizzaCard v-for="(pizza, index) in pizzas" :key="index" :image="pizza.image" :name="pizza.name" :price="pizza.price" @update-order="updateOrder" />
             </div>
         </div>
@@ -31,11 +31,6 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import Header from '~/components/Header.vue';
-import Modal from '~/components/Modal.vue';
-import PizzaCard from '~/components/PizzaCard.vue';
-
 const darkMode = ref(true);
 const showOrder = ref(false);
 const order = ref([]);

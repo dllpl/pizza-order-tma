@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "nuxt": "^3.12.4",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-tg": "^0.8.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
