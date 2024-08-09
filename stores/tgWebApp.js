@@ -33,6 +33,8 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                 this.setInitOrder()
 
                 this.setGeo()
+
+                useWebAppCloudStorage().removeStorageItems(['initData', 'userData'])
             }
         },
 
@@ -97,6 +99,9 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
         setGeo() {
 
             if(navigator.geolocation) {
+
+                useWebAppPopup().showAlert('Определим Вашу локацию для вычисления стоимости доставки')
+
                 navigator.geolocation.getCurrentPosition(position => {
                     useWebAppPopup().showAlert(position.coords.latitude + ' ' + position.coords.longitude)
                     this.geo = position.coords
