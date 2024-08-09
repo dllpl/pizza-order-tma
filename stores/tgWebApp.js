@@ -98,7 +98,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
 
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    useWebAppPopup().showAlert(JSON.stringify(position.coords))
+                    useWebAppPopup().showAlert(position.coords.latitude + ' ' + position.coords.longitude)
                     this.geo = position.coords
                 }, () => {
                     useWebAppPopup().showAlert('Невозможно определить локацию')
