@@ -34,7 +34,6 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
 
                 this.setGeo()
 
-                useWebAppCloudStorage().removeStorageItems(['initData', 'userData'])
             }
         },
 
