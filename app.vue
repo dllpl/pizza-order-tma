@@ -7,16 +7,5 @@
 <script setup>
 import {ClosingConfirmation} from 'vue-tg'
 
-const tgWebApp = useTgWebAppStore()
-
-tgWebApp.setWebAppData()
-
-tgWebApp.setUserData()
-
-
-
-tgWebApp.setGeo()
-
-
-
+useTgWebAppStore().init()
 </script>

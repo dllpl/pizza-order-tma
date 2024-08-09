@@ -7,37 +7,45 @@
             <button
                     v-if="count > 0"
                     @click="decrement"
-                    class="bg-red-500 text-white rounded md:px-4 px-5 py-1">-</button>
+                    class="bg-red-500 text-white rounded md:px-4 px-5 py-1">-
+            </button>
             <span v-if="count > 0" class="mx-2 text-black dark:text-white">{{ count }}</span>
             <button
                     @click="increment"
-                    class="bg-tg-light text-white rounded md:px-4 px-5 py-1">+</button>
+                    class="bg-tg-light text-white rounded md:px-4 px-5 py-1">+
+            </button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
 const props = defineProps({
     image: String,
     name: String,
     price: Number,
+    order: Array,
 })
 
 const count = ref(0)
 
 const emit = defineEmits(['update-order'])
 
-function increment() {
+const increment = () => {
     count.value++
-    emit('update-order', { name: props.name, price: props.price, action: 'add' })
+    emit('update-order', {name: props.name, price: props.price, action: 'add'})
 }
 
-function decrement() {
+const decrement = () => {
     if (count.value > 0) {
         count.value--
-        emit('update-order', { name: props.name, price: props.price, action: 'remove' })
+        emit('update-order', {name: props.name, price: props.price, action: 'remove'})
     }
 }
+// console.log(props.order)
+
+
+watch(()=> props.order, () => {
+    count.value = props.order.find(p => p.name === props.name)?.count ?? 0
+})
+
 </script>
