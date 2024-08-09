@@ -95,7 +95,8 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
         },
 
         setGeo() {
-            navigator.geolocation.getCurrentPosition((position) => {
+            window.navigator.geolocation.getCurrentPosition((position) => {
+
                 alert(JSON.stringify(position.coords))
                 this.geo = position.coords
             }, () => {
