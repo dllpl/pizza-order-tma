@@ -95,17 +95,21 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
         },
 
         setGeo() {
-            window.navigator.geolocation.getCurrentPosition((position) => {
 
-                alert(JSON.stringify(position.coords))
-                this.geo = position.coords
-            }, () => {
-                // useWebAppPopup().showAlert('Невозможно определить локацию')
-            }, {
-                enableHighAccuracy: true,
-                maximumAge: 1000,
-                timeout: 3600
-            })
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    alert(JSON.stringify(position.coords))
+                    this.geo = position.coords
+                }, () => {
+                    useWebAppPopup().showAlert('Невозможно определить локацию')
+                }, {
+                    enableHighAccuracy: true,
+                    maximumAge: 1000,
+                    timeout: 3600
+                })
+            } else {
+                useWebAppPopup().showAlert('Невозможно определить локацию')
+            }
         },
     }
 })
