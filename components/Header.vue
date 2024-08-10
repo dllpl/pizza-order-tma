@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-between items-center mb-4">
         <span class="text-black dark:text-white">
-            Привет, {{store.initDataUnsafe?.user?.first_name}} {{store.initDataUnsafe?.user?.last_name}}, выбери пицку
+            {{store.initDataUnsafe?.user?.first_name}} {{store.initDataUnsafe?.user?.last_name}}
         </span>
         <button @click="$emit('toggle-dark-mode')">
             {{ darkMode ? '🌝' : '🌚' }}

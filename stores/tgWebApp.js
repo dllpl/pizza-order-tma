@@ -32,7 +32,6 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                 this.setViewport()
                 this.setInitOrder()
             }
-
         },
 
         setInitOrder() {
@@ -49,10 +48,6 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
 
         setViewport() {
             this.viewport = useWebAppViewport()
-
-            if(this.webAppData.version > '7.7') {
-                this.viewport.disableVerticalSwipes()
-            }
         },
 
 
@@ -78,6 +73,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         const storageInit = () => {
                             useWebAppRequests().requestContact((ok, response) => {
                                 if (ok) {
+                                    this.userData = response.responseUnsafe
                                     useWebAppCloudStorage().setStorageItem('userData', JSON.stringify(response.responseUnsafe))
                                     resolve(response.responseUnsafe)
                                 } else {
@@ -85,8 +81,8 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                                         if (ok) {
                                             storageInit()
                                         } else {
-                                            useWebAppPopup().showAlert('Для оформления заказа, нужно поделиться телефоном')
-                                            reject('Для оформления заказа, нужно поделиться телефоном')
+                                            useWebAppPopup().showAlert('Если вы не хотите делиться контактами, укажите их в ручную')
+                                            resolve(false)
                                         }
                                     })
                                 }
@@ -94,6 +90,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         }
                         storageInit()
                     } else {
+                        this.userData = JSON.parse(data)
                         resolve(JSON.parse(data))
                     }
                 })
@@ -107,14 +104,17 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         this.geo = position.coords
                         resolve(position.coords)
                     }, () => {
-                        reject('Невозможно определить локацию')
+                        console.log(this.initDataUnsafe)
+                        useWebAppPopup().showAlert('Невозможно определить локацию, укажите Ваш адрес в ручную')
+                        resolve(false)
                     }, {
                         enableHighAccuracy: true,
                         maximumAge: 1000,
                         timeout: 3600
                     })
                 } else {
-                    reject('Невозможно определить локацию')
+                    useWebAppPopup().showAlert('Невозможно определить локацию, укажите Ваш адрес в ручную')
+                    resolve(false)
                 }
             })
         },

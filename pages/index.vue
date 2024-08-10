@@ -9,7 +9,8 @@
             </div>
 
             <Modal :show="showOrder" title="Заказ" @close="closeModal">
-                <Order :order="order" :total="total"/>
+                <Order v-if="orderStep === 1" :order="order" :total="total"/>
+                <Contacts v-if="orderStep === 2" :contacts="contacts" :geo="geo"/>
             </Modal>
         </div>
 
@@ -24,7 +25,7 @@ import {MainButton, useWebAppCloudStorage} from "vue-tg";
 const darkMode = ref(true)
 const showOrder = ref(false)
 const order = ref([])
-const orderStep = ref(1)
+const orderStep = ref(0)
 const pizzas = [
     {
         image: 'https://img.freepik.com/free-vector/slice-pizza-melted-floating-cartoon-vector-icon-illustration-food-object-icon-isolated-flat_138676-12745.jpg',
@@ -58,22 +59,29 @@ const pizzas = [
     },
 ];
 const appInit = ref(false)
+const contacts = ref({})
+const geo = ref({})
 
 
 const orderProcess = async (step) => {
+    step++
     switch (step) {
         case 1:
+            console.log(step)
             openOrderModal()
             orderStep.value++
             break
         case 2:
 
-            const userData = await useTgWebAppStore().setUserData()
-            const geo = await useTgWebAppStore().setGeo()
+            contacts.value = await useTgWebAppStore().setUserData()
+            console.log(contacts.value)
+            geo.value = await useTgWebAppStore().setGeo()
 
-            if(userData && geo) {
-                alert('гео и контакты есть')
-            }
+            orderStep.value++
+
+            // if(userData && geo) {
+            //     alert('гео и контакты есть')
+            // }
 
             // orderNow()
             // orderStep.value++
@@ -103,7 +111,7 @@ const orderNow = async () => {
 
 const closeModal = () => {
     showOrder.value = false;
-    orderStep.value--;
+    orderStep.value = 0;
     enableScroll();
 }
 
@@ -111,7 +119,7 @@ const total = computed(() => {
     return order.value.reduce((total, pizza) => total + pizza.price * pizza.count, 0);
 })
 const mainButtonText = computed(() => {
-    if(order.value.length > 0 && !showOrder.value) {
+    if (order.value.length > 0 && !showOrder.value) {
         return 'Заказать'
     } else {
         return 'Оформить'
