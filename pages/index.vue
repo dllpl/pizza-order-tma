@@ -1,23 +1,25 @@
 <template>
     <div :class="darkMode ? 'dark' : ''">
         <div v-show="appInit" class="p-4 bg-tg-background dark:bg-gray-900 min-h-screen">
-            <Header :darkMode="darkMode" @toggle-dark-mode="toggleDarkMode" @open-modal="openModal"/>
-
-            <Modal :show="showOrder" title="Заказ" @close="closeModal">
-                <Order v-if="orderStep === 1" :order="order" :total="total" @nextStep="nextStep"/>
-            </Modal>
+            <Header :darkMode="darkMode" @toggle-dark-mode="toggleDarkMode" @open-modal="openOrderModal"/>
 
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                 <PizzaCard v-for="(pizza, index) in pizzas" :key="index" :image="pizza.image" :name="pizza.name"
                            :price="pizza.price" @update-order="updateOrder" :order="order"/>
             </div>
+
+            <Modal :show="showOrder" title="Заказ" @close="closeModal">
+                <Order :order="order" :total="total"/>
+            </Modal>
         </div>
+
         <Spinner :loading="!appInit"/>
+        <MainButton :text="mainButtonText" @click="orderProcess(orderStep)" :visible="order.length > 0"/>
     </div>
 </template>
 
 <script setup>
-import {useWebAppCloudStorage} from "vue-tg";
+import {MainButton, useWebAppCloudStorage} from "vue-tg";
 
 const darkMode = ref(true)
 const showOrder = ref(false)
@@ -57,32 +59,64 @@ const pizzas = [
 ];
 const appInit = ref(false)
 
-const nextStep = () => {
-    orderStep.value++;
-};
+
+const orderProcess = async (step) => {
+    switch (step) {
+        case 1:
+            openOrderModal()
+            orderStep.value++
+            break
+        case 2:
+
+            const userData = await useTgWebAppStore().setUserData()
+            const geo = await useTgWebAppStore().setGeo()
+
+            if(userData && geo) {
+                alert('гео и контакты есть')
+            }
+
+            // orderNow()
+            // orderStep.value++
+            break
+        default:
+            break
+    }
+}
+
+// const nextStep = () => {
+//     orderStep.value++;
+// };
 const toggleDarkMode = () => {
     darkMode.value = !darkMode.value;
 };
 
-const openModal = () => {
+const openOrderModal = () => {
     showOrder.value = true;
     disableScroll();
 };
 
 const orderNow = async () => {
-    await useTgWebAppStore().setUserData()
+    // await useTgWebAppStore().setUserData()
     alert('Заказ оформлен');
     // closeModal();
 };
 
 const closeModal = () => {
     showOrder.value = false;
+    orderStep.value--;
     enableScroll();
-};
+}
 
 const total = computed(() => {
     return order.value.reduce((total, pizza) => total + pizza.price * pizza.count, 0);
-});
+})
+const mainButtonText = computed(() => {
+    if(order.value.length > 0 && !showOrder.value) {
+        return 'Заказать'
+    } else {
+        return 'Оформить'
+    }
+})
 
 const updateOrder = (pizza) => {
     const existingPizza = order.value.find(p => p.name === pizza.name);
@@ -122,7 +156,7 @@ useWebAppCloudStorage().getStorageItem('pizzaOrder').then((data) => {
 
     setTimeout(() => {
         appInit.value = true
-    }, 1500)
+    }, 500)
 })
 
 </script>

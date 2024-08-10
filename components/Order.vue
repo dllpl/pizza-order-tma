@@ -37,11 +37,6 @@ const orderNow = async () => {
             <div class="mb-2">
                 Итого: {{ total }} ₽
             </div>
-            <button @click="orderNow"
-                    class="bg-tg-light dark:bg-tg-dark text-white rounded-lg px-4 py-2 w-full disabled:opacity-50"
-                    :disabled="!total">
-                Оформить
-            </button>
         </div>
     </div>
 </template>
