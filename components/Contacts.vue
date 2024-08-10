@@ -21,8 +21,8 @@ if(props.geo) {
             'Authorization': 'Token ' + 'a963decbb7de0685da0de94aa3655786ea5a336d',
         },
         body: {
-            lat: 55.745179743493146,
-            lon: 52.399184816753106,
+            lat: props.geo.latitude,
+            lon: props.geo.longitude,
             count: 1,
             radius_meters: 50
         }
