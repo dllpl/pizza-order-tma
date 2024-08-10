@@ -104,7 +104,6 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         this.geo = position.coords
                         resolve(position.coords)
                     }, () => {
-                        console.log(this.initDataUnsafe)
                         useWebAppPopup().showAlert('Невозможно определить локацию, укажите Ваш адрес в ручную')
                         resolve(false)
                     }, {

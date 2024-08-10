@@ -13,7 +13,7 @@ const props = defineProps({
 const address = ref('')
 
 if(props.geo) {
-    const {data} = await useFetch('http://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address', {
+    const {data} = await useFetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
