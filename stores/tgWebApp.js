@@ -4,7 +4,7 @@ import {
     useWebAppCloudStorage,
     useWebAppPopup,
     useWebAppViewport,
-    useWebAppTheme
+    useWebAppTheme,
 } from 'vue-tg'
 
 export const useTgWebAppStore = defineStore('tgWebAppStore', {
@@ -22,20 +22,17 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
     actions: {
 
         init() {
-            // useWebAppCloudStorage().removeStorageItems(['initData'])
-            if (useWebApp().version > '6.0') {
+
+            this.setWebAppData()
+
+            if (this.webAppData.version > '6.0') {
                 this.setWebAppData()
+                this.setInitData()
                 this.setTheme()
                 this.setViewport()
-
-                // this.setUserData()
-
                 this.setInitOrder()
-
-                // this.setGeo()
-
-
             }
+
         },
 
         setInitOrder() {
@@ -52,18 +49,22 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
 
         setViewport() {
             this.viewport = useWebAppViewport()
+
+            if(this.webAppData.version > '7.7') {
+                this.viewport.disableVerticalSwipes()
+            }
         },
 
 
         setWebAppData() {
-
             this.webAppData = useWebApp()
+        },
 
+        setInitData() {
             useWebAppCloudStorage().getStorageItem('initData').then((data, err) => {
                 if (!data && !err) {
                     this.initDataUnsafe = useWebApp().initDataUnsafe
                     useWebAppCloudStorage().setStorageItem('initData', JSON.stringify(this.initDataUnsafe))
-                    alert(JSON.stringify(this.initDataUnsafe))
                 } else {
                     this.initDataUnsafe = JSON.parse(data)
                 }
