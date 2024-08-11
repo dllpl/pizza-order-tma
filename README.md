@@ -1,6 +1,6 @@
-# Nuxt 3 Minimal Starter
+# Pizza order - Telegram Mini App (TMA) on Vue 3, Nuxt 3 and Tailwind
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction)
 
 ## Setup
 
