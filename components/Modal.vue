@@ -3,6 +3,7 @@
         <div class="bg-white dark:bg-gray-900 p-6 rounded-lg w-full max-w-lg mx-4">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ title }}</h2>
+                <button @click="$emit('close')" class="text-gray-900 dark:text-gray-100"><fa :icon="faTimes"/></button>
             </div>
             <div>
                 <slot></slot>
@@ -12,6 +13,8 @@
 </template>
 
 <script setup>
+import {faTimes} from "@fortawesome/free-solid-svg-icons"
+
 defineProps({
     show: Boolean,
     title: String,

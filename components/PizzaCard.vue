@@ -7,18 +7,22 @@
             <button
                     v-if="count > 0"
                     @click="decrement"
-                    class="bg-red-500 text-white rounded md:px-4 px-5 py-1">-
+                    class="bg-red-500 text-white rounded md:px-4 px-5 py-1">
+                <fa :icon="faMinus"/>
             </button>
             <span v-if="count > 0" class="mx-2 text-black dark:text-white">{{ count }}</span>
             <button
                     @click="increment"
-                    class="bg-tg-light text-white rounded md:px-4 px-5 py-1">+
+                    class="bg-tg-light text-white rounded md:px-4 px-5 py-1">
+                <fa :icon="faPlus"/>
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons"
+
 const props = defineProps({
     image: String,
     name: String,
