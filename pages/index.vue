@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import {MainButton, useWebAppCloudStorage} from "vue-tg";
+import {MainButton, useWebAppCloudStorage, useWebAppHapticFeedback} from "vue-tg";
 
 const darkMode = ref(true)
 const showOrder = ref(false)
@@ -65,6 +65,7 @@ const geo = ref({})
 
 const orderProcess = async (step) => {
     step++
+    useWebAppHapticFeedback().impactOccurred('heavy')
     switch (step) {
         case 1:
             console.log(step)

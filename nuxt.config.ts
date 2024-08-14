@@ -29,11 +29,5 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2024-08-08',
-    modules: ['@pinia/nuxt', "@vesp/nuxt-fontawesome"],
-
-    fontawesome: {
-        component: 'fa',
-        useLayers: false,
-    }
-
+    modules: ['@pinia/nuxt'],
 })

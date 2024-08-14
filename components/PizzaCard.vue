@@ -8,20 +8,21 @@
                     v-if="count > 0"
                     @click="decrement"
                     class="bg-red-500 text-white rounded md:px-4 px-5 py-1">
-                <fa :icon="faMinus"/>
+                <MinusIcon class="size-5"/>
             </button>
             <span v-if="count > 0" class="mx-2 text-black dark:text-white">{{ count }}</span>
             <button
                     @click="increment"
                     class="bg-tg-light text-white rounded md:px-4 px-5 py-1">
-                <fa :icon="faPlus"/>
+                <PlusIcon class="size-5"/>
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
-import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons"
+import {useWebAppHapticFeedback} from "vue-tg";
+import {MinusIcon, PlusIcon} from '@heroicons/vue/24/outline'
 
 const props = defineProps({
     image: String,
@@ -35,11 +36,13 @@ const count = ref(0)
 const emit = defineEmits(['update-order'])
 
 const increment = () => {
+    useWebAppHapticFeedback().impactOccurred('soft')
     count.value++
     emit('update-order', {name: props.name, price: props.price, action: 'add'})
 }
 
 const decrement = () => {
+    useWebAppHapticFeedback().impactOccurred('soft')
     if (count.value > 0) {
         count.value--
         emit('update-order', {name: props.name, price: props.price, action: 'remove'})
