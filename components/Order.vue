@@ -10,18 +10,6 @@ defineProps({
     }
 })
 
-const orderNow = async () => {
-    const userData = useTgWebAppStore().userData
-
-    if(userData) {
-
-    } else {
-        useTgWebAppStore().setUserData()
-    }
-
-    console.log(userData)
-}
-
 </script>
 
 <template>

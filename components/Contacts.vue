@@ -9,7 +9,6 @@ const props = defineProps({
         required: false
     },
 })
-
 const address = ref('')
 
 if (props.geo) {

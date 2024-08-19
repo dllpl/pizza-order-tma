@@ -1,3 +1,34 @@
+<script setup>
+import {MinusIcon, PlusIcon} from '@heroicons/vue/24/outline'
+
+const props = defineProps({
+    image: String,
+    name: String,
+    price: Number,
+    order: Array,
+})
+
+const count = ref(0)
+
+const emit = defineEmits(['update-order'])
+
+const increment = () => {
+    count.value++
+    emit('update-order', {name: props.name, price: props.price, action: 'add'})
+}
+
+const decrement = () => {
+    if (count.value > 0) {
+        count.value--
+        emit('update-order', {name: props.name, price: props.price, action: 'remove'})
+    }
+}
+
+watch(()=> props.order, () => {
+    count.value = props.order.find(p => p.name === props.name)?.count ?? 0
+})
+
+</script>
 <template>
     <div class="border rounded-lg flex flex-col items-center bg-white dark:bg-gray-800 dark:border-gray-700">
         <img :src="image" alt="Pizza" class="w-full object-cover mb-4 rounded-t-lg" loading="lazy">
@@ -19,40 +50,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import {useWebAppHapticFeedback} from "vue-tg";
-import {MinusIcon, PlusIcon} from '@heroicons/vue/24/outline'
-
-const props = defineProps({
-    image: String,
-    name: String,
-    price: Number,
-    order: Array,
-})
-
-const count = ref(0)
-
-const emit = defineEmits(['update-order'])
-
-const increment = () => {
-    useWebAppHapticFeedback().impactOccurred('soft')
-    count.value++
-    emit('update-order', {name: props.name, price: props.price, action: 'add'})
-}
-
-const decrement = () => {
-    useWebAppHapticFeedback().impactOccurred('soft')
-    if (count.value > 0) {
-        count.value--
-        emit('update-order', {name: props.name, price: props.price, action: 'remove'})
-    }
-}
-// console.log(props.order)
-
-
-watch(()=> props.order, () => {
-    count.value = props.order.find(p => p.name === props.name)?.count ?? 0
-})
-
-</script>
