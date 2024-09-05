@@ -4,4 +4,5 @@
     </div>
 </template>
 <script setup>
+useTgWebAppStore().init()
 </script>

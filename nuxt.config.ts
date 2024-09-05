@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: {enabled: false},
-    ssr: true,
+    ssr: false,
 
     app: {
         head: {
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
 
     devServer: {
-        host: '127.0.0.1',
+        host: '192.168.88.254',
     },
 
     compatibilityDate: '2024-08-08',
