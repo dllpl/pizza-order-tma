@@ -1,8 +1,8 @@
-<template>
-    <div>
-        <NuxtPage/>
-    </div>
-</template>
 <script setup>
-useTgWebAppStore().init()
+console.log(false)
+await useTgWebAppStore().init()
+console.log(true)
 </script>
+<template>
+    <NuxtPage/>
+</template>

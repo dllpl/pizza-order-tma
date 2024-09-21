@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
 
     devServer: {
-        host: '192.168.88.254',
+        host: '192.168.88.175',
     },
 
     compatibilityDate: '2024-08-08',

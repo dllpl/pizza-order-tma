@@ -1,4 +1,10 @@
 <script setup>
+import { MainButton } from 'vue-tg'
+import { ClosingConfirmation } from 'vue-tg'
+function handleMainButton() {
+    console.log('click')
+}
+
 
 const darkMode = ref(true)
 const showOrder = ref(false)
@@ -100,6 +106,14 @@ const enableScroll = () => {
     document.body.classList.remove('overflow-hidden');
 };
 
+const mainButtonText = computed(() => {
+    if (order.value.length > 0 && !showOrder.value) {
+        return 'Заказать'
+    } else {
+        return 'Оформить'
+    }
+})
+
 </script>
 <template>
     <div :class="darkMode ? 'dark' : ''">
@@ -116,5 +130,7 @@ const enableScroll = () => {
                 <Contacts v-if="orderStep === 2" :contacts="contacts" :geo="geo"/>
             </Modal>
         </div>
+        <MainButton :text="mainButtonText" @click="orderProcess(orderStep)" :visible="order.length > 0"/>
+        <ClosingConfirmation />
     </div>
 </template>
