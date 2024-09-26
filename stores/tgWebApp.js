@@ -62,7 +62,6 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         })
 
                     } else {
-                        data = data.replace('0594925', '******')
                         contactData = JSON.parse(data)
                     }
                     resolve(contactData)
