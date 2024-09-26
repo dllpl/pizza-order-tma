@@ -1,6 +1,7 @@
 import {
     useWebApp,
-    useWebAppCloudStorage, useWebAppPopup, useWebAppRequests
+    useWebAppCloudStorage, useWebAppPopup, useWebAppRequests,
+    useWebAppBiometricManager
 } from 'vue-tg'
 
 export const useTgWebAppStore = defineStore('tgWebAppStore', {
@@ -16,7 +17,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
             return new Promise(async (resolve, reject) => {
                 this.webAppData = useWebApp()
 
-                if(this.webAppData.version > '6.0') {
+                if (this.webAppData.version > '6.0') {
                     this.dataUnsafe = await this.initDataUnsafe()
                     this.contactData = await this.initContactData()
                 }
@@ -37,7 +38,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                     } else {
                         dataUnsafe = JSON.parse(data)
                     }
-                    resolve(dataUnsafe)
+                    resolve(dataUnsafe)``
                 })
             })
         },
@@ -61,11 +62,64 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                         })
 
                     } else {
+                        data = data.replace('0594925', '******')
                         contactData = JSON.parse(data)
                     }
                     resolve(contactData)
                 })
             })
-        }
+        },
+
+        authenticateBiometric() {
+            return new Promise((resolve, reject) => {
+                if(this.webAppData.platform !== 'tdesktop' && this.webAppData.version > '7.2') {
+                    useWebAppBiometricManager().initBiometric(() => {
+                        const biometricSettings = useWebAppBiometricManager().openBiometricSettings()
+                        if(biometricSettings.isBiometricAvailable) {
+                            useWebAppBiometricManager().authenticateBiometric('Это нужно, чтобы подтвердить Ваш заказ', (ok, token) => {
+                                if(ok) {
+                                    if(!token.length) {
+
+                                        token = Math.random().toString(36).substring(2, 15);
+
+                                        useWebAppBiometricManager().updateBiometricToken(token, () => {
+                                            resolve({
+                                                ok: true,
+                                                token: token,
+                                                deviceId: biometricSettings.deviceId,
+                                                message: 'Мы верифицировали Ваш заказ',
+                                            })
+                                        })
+                                    } else {
+                                        resolve({
+                                            ok: true,
+                                            token,
+                                            deviceId: biometricSettings.deviceId,
+                                            message: 'Мы верифицировали Ваш заказ',
+                                        })
+                                    }
+
+                                } else {
+                                    resolve({
+                                        token,
+                                        ok: false,
+                                        message: 'Мы не смогли верифицировать Ваш заказ',
+                                    })
+                                }
+                            })
+                        } else {
+                            resolve({
+                                ok: false,
+                                message: 'Мы не смогли верифицировать Ваш заказ',
+                            })
+                        }
+                    })
+                } else {
+                    resolve({
+                        ok: true
+                    })
+                }
+            })
+        },
     }
 })

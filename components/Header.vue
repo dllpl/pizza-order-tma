@@ -5,20 +5,14 @@ defineProps({
 
 const {user} = useTgWebAppStore().dataUnsafe
 
-const phone = computed(() => {
-    let contactData = useTgWebAppStore().contactData
-    if(contactData) {
-        return contactData.phone_number.slice(0, 5)
-    } else {
-        return ''
-    }
-})
+const contactData = useTgWebAppStore().contactData
+
 
 </script>
 <template>
     <div class="flex justify-between items-center mb-4">
         <span class="text-black dark:text-white">
-            {{user.first_name}} {{user.last_name}} {{phone.slice(0, 5)}}
+            {{contactData.first_name}} {{contactData.last_name}} {{contactData.phone_number}}
         </span>
         <button @click="$emit('toggle-dark-mode')">
             {{ darkMode ? '🌝' : '🌚' }}

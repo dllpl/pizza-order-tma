@@ -42,8 +42,8 @@ const pizzas = [
         price: 350
     },
 ];
-const contacts = ref({})
-const geo = ref({})
+
+const contactData = useTgWebAppStore().contactData
 
 const orderProcess = async (step) => {
     step++
@@ -55,6 +55,13 @@ const orderProcess = async (step) => {
         case 2:
             orderStep.value++
             break
+        case 3:
+            const res = await useTgWebAppStore().authenticateBiometric()
+
+            if(res.ok) {
+                order.step++
+            }
+
         default:
             break
     }
@@ -127,7 +134,7 @@ const mainButtonText = computed(() => {
 
             <Modal :show="showOrder" title="Заказ" @close="closeModal">
                 <Order v-if="orderStep === 1" :order="order" :total="total"/>
-                <Contacts v-if="orderStep === 2" :contacts="contacts" :geo="geo"/>
+                <Contacts v-if="orderStep === 2" :contactData="contactData"/>
             </Modal>
         </div>
         <MainButton :text="mainButtonText" @click="orderProcess(orderStep)" :visible="order.length > 0"/>
