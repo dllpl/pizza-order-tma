@@ -1,10 +1,6 @@
 <script setup>
 import { MainButton } from 'vue-tg'
 import { ClosingConfirmation } from 'vue-tg'
-function handleMainButton() {
-    console.log('click')
-}
-
 
 const darkMode = ref(true)
 const showOrder = ref(false)
@@ -56,16 +52,32 @@ const orderProcess = async (step) => {
             orderStep.value++
             break
         case 3:
+
             const res = await useTgWebAppStore().authenticateBiometric()
 
             if(res.ok) {
-                order.step++
+                await $fetch('/api/order', {
+                    method: 'POST',
+                    body: {
+                        order: order.value,
+                        total: total.value,
+                        contactData: contactData,
+                        unsafeData: contactData.unsafe
+                    }
+                })
+
+                useTgWebAppStore().webAppData.close()
             }
 
         default:
             break
     }
 }
+
+const updateContactData = (data) => {
+    console.log(data)
+}
+
 const toggleDarkMode = () => {
     darkMode.value = !darkMode.value;
 };
@@ -134,7 +146,7 @@ const mainButtonText = computed(() => {
 
             <Modal :show="showOrder" title="Заказ" @close="closeModal">
                 <Order v-if="orderStep === 1" :order="order" :total="total"/>
-                <Contacts v-if="orderStep === 2" :contactData="contactData"/>
+                <Contacts v-if="orderStep === 2" :contactData="contactData" @updateContactData="updateContactData"/>
             </Modal>
         </div>
         <MainButton :text="mainButtonText" @click="orderProcess(orderStep)" :visible="order.length > 0"/>

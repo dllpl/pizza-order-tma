@@ -24,6 +24,10 @@ export default defineNuxtConfig({
         },
     },
 
+    runtimeConfig: {
+        telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
+    },
+
     devServer: {
         host: '192.168.88.175',
     },

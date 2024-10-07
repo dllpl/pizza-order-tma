@@ -38,7 +38,7 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
                     } else {
                         dataUnsafe = JSON.parse(data)
                     }
-                    resolve(dataUnsafe)``
+                    resolve(dataUnsafe)
                 })
             })
         },
@@ -54,7 +54,13 @@ export const useTgWebAppStore = defineStore('tgWebAppStore', {
 
                         useWebAppRequests().requestContact((ok, response) => {
                             if (ok) {
-                                contactData = response.responseUnsafe.contact
+                                contactData = {
+                                    first_name: response.responseUnsafe.contact.first_name,
+                                    last_name: response.responseUnsafe.contact.last_name,
+                                    phone_number: response.responseUnsafe.contact.phone_number.slice(1, 5) + '****',
+                                    user_id: response.responseUnsafe.contact.user_id,
+                                    unsafe: response.response
+                                }
                                 useWebAppCloudStorage().setStorageItem('contactData', JSON.stringify(contactData))
                             } else {
                                 useWebAppPopup().showAlert('Контакт не получен')
